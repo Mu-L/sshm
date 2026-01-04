@@ -145,9 +145,9 @@ const (
 	identityInput
 	proxyJumpInput
 	proxyCommandInput
+	optionsInput
 	tagsInput
 	// Advanced tab inputs
-	optionsInput
 	remoteCommandInput
 	requestTTYInput
 )

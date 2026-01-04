@@ -686,15 +686,15 @@ func (m *editFormModel) submitEditForm() tea.Cmd {
 		}
 
 		// Get property values using direct indices
-		hostname := strings.TrimSpace(m.inputs[0].Value())      // hostnameInput
-		user := strings.TrimSpace(m.inputs[1].Value())          // userInput
-		port := strings.TrimSpace(m.inputs[2].Value())          // portInput
-		identity := strings.TrimSpace(m.inputs[3].Value())      // identityInput
-		proxyJump := strings.TrimSpace(m.inputs[4].Value())     // proxyJumpInput
-		proxyCommand := strings.TrimSpace(m.inputs[5].Value())  // proxyCommandInput
-		options := strings.TrimSpace(m.inputs[6].Value())       // optionsInput
-		remoteCommand := strings.TrimSpace(m.inputs[8].Value()) // remoteCommandInput
-		requestTTY := strings.TrimSpace(m.inputs[9].Value())    // requestTTYInput
+		hostname := strings.TrimSpace(m.inputs[0].Value())                                   // hostnameInput
+		user := strings.TrimSpace(m.inputs[1].Value())                                       // userInput
+		port := strings.TrimSpace(m.inputs[2].Value())                                       // portInput
+		identity := strings.TrimSpace(m.inputs[3].Value())                                   // identityInput
+		proxyJump := strings.TrimSpace(m.inputs[4].Value())                                  // proxyJumpInput
+		proxyCommand := strings.TrimSpace(m.inputs[5].Value())                               // proxyCommandInput
+		options := config.ParseSSHOptionsFromCommand(strings.TrimSpace(m.inputs[6].Value())) // optionsInput
+		remoteCommand := strings.TrimSpace(m.inputs[8].Value())                              // remoteCommandInput
+		requestTTY := strings.TrimSpace(m.inputs[9].Value())                                 // requestTTYInput
 
 		// Set defaults
 		if port == "" {
@@ -714,7 +714,7 @@ func (m *editFormModel) submitEditForm() tea.Cmd {
 		}
 
 		// Parse tags
-		tagsStr := strings.TrimSpace(m.inputs[6].Value()) // tagsInput
+		tagsStr := strings.TrimSpace(m.inputs[7].Value()) // tagsInput
 		var tags []string
 		if tagsStr != "" {
 			for _, tag := range strings.Split(tagsStr, ",") {

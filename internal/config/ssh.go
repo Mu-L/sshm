@@ -658,11 +658,32 @@ func AddSSHHostToFile(host SSHHost, configPath string) error {
 }
 
 // ParseSSHOptionsFromCommand converts SSH command line options to config format
-// Input: "-o Compression=yes -o ServerAliveInterval=60"
+// Input: "-o Compression=yes -o ServerAliveInterval=60" or "ForwardX11 true" or "Compression yes"
 // Output: "Compression yes\nServerAliveInterval 60"
 func ParseSSHOptionsFromCommand(options string) string {
 	if options == "" {
 		return ""
+	}
+
+	options = strings.TrimSpace(options)
+
+	// If it doesn't contain -o, assume it's already in config format
+	if !strings.Contains(options, "-o") {
+		// Just normalize spaces and ensure newlines between options
+		lines := strings.Split(options, "\n")
+		var result []string
+		for _, line := range lines {
+			line = strings.TrimSpace(line)
+			if line == "" {
+				continue
+			}
+			// Normalize spacing (replace multiple spaces with single space)
+			parts := strings.Fields(line)
+			if len(parts) > 0 {
+				result = append(result, strings.Join(parts, " "))
+			}
+		}
+		return strings.Join(result, "\n")
 	}
 
 	var result []string
@@ -688,6 +709,12 @@ func ParseSSHOptionsFromCommand(options string) string {
 func FormatSSHOptionsForCommand(options string) string {
 	if options == "" {
 		return ""
+	}
+
+	// If already in command format (starts with -o), return as is
+	trimmed := strings.TrimSpace(options)
+	if strings.HasPrefix(trimmed, "-o ") {
+		return trimmed
 	}
 
 	var result []string
