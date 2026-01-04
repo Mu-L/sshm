@@ -613,9 +613,9 @@ func (m *editFormModel) renderEditAdvancedTab() string {
 		index int
 		label string
 	}{
-		{5, "SSH Options"},
-		{7, "Remote Command"},
-		{8, "Request TTY"},
+		{6, "SSH Options"},
+		{8, "Remote Command"},
+		{9, "Request TTY"},
 	}
 
 	for _, field := range fields {
