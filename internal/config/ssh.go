@@ -283,8 +283,12 @@ func parseSSHConfigFileWithProcessedFiles(configPath string, processedFiles map[
 			hostNames := strings.Fields(value)
 
 			// Skip hosts with wildcards (*, ?) as they are typically patterns, not actual hosts
+			// Also remove surrounding quotes from host names
 			var validHostNames []string
 			for _, hostName := range hostNames {
+				// Remove surrounding double quotes if present
+				hostName = strings.Trim(hostName, `"`)
+
 				if !strings.ContainsAny(hostName, "*?") {
 					validHostNames = append(validHostNames, hostName)
 				}
@@ -896,6 +900,9 @@ func quickHostSearchInFile(hostName string, configPath string, processedFiles ma
 
 			// Check if our target host is in this Host declaration
 			for _, candidateHostName := range hostNames {
+				// Remove surrounding double quotes if present
+				candidateHostName = strings.Trim(candidateHostName, `"`)
+
 				// Skip hosts with wildcards (*, ?) as they are typically patterns
 				if !strings.ContainsAny(candidateHostName, "*?") && candidateHostName == hostName {
 					return true, nil // Found the host!
